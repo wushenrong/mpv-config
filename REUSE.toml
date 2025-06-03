@@ -1,0 +1,70 @@
+# SPDX-FileCopyrightText: 2025 Samuel Wu
+#
+# SPDX-License-Identifier: Unlicense
+
+version = 1
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025 Samuel Wu"
+SPDX-License-Identifier = "Unlicense"
+path = ["README.md"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2018 The Cabin Project Authors"
+SPDX-License-Identifier = "OFL-1.1"
+path = ["fonts/Cabin.ttf"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025 tomasklaen"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+path = ["fonts/uosc_icons.otf", "fonts/uosc_textures.ttf", "scripts/uosc/**"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2023 po5"
+SPDX-License-Identifier = "LGPL-3.0-or-later"
+path = ["scripts/sponsorblock.lua", "scripts/sponsorblock_shared/**"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025 mpv-player"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+path = [
+    "scripts/autocrop.lua",
+    "scripts/autodeint.lua",
+    "scripts/autosave.lua",
+    "scripts/pause-when-minimize.lua",
+]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025 stax76"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+path = ["scripts/misc.lua"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2024 christoph-heinrich"
+SPDX-License-Identifier = "GPL-2.0-or-later"
+path = ["scripts/quality-menu.lua"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2023 natural-harmonia-gropius"
+SPDX-License-Identifier = "MIT"
+path = ["scripts/recent-menu.lua"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2025 po5"
+SPDX-License-Identifier = "MPL-2.0"
+path = ["scripts/thumbfast.lua"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2024 Joao Chrisostomo, Kacper Michajłow"
+SPDX-License-Identifier = "MIT"
+path = ["shaders/ArtCNN_C4F16.glsl"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2021 Advanced Micro Devices, Inc."
+SPDX-License-Identifier = "MIT"
+path = ["shaders/FSR.glsl"]
+
+[[annotations]]
+SPDX-FileCopyrightText = "2023 bjin"
+SPDX-License-Identifier = "LGPL-3.0-or-later"
+path = ["shaders/nnedi3-nns64-win8x4.hook"]

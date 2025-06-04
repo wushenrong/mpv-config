@@ -28,6 +28,7 @@ path = ["scripts/sponsorblock.lua", "scripts/sponsorblock_shared/**"]
 SPDX-FileCopyrightText = "2025 mpv-player"
 SPDX-License-Identifier = "LGPL-2.1-or-later"
 path = [
+    "scripts/auto_mode.lua",
     "scripts/autocrop.lua",
     "scripts/autodeint.lua",
     "scripts/autosave.lua",
@@ -47,7 +48,7 @@ path = ["scripts/quality-menu.lua"]
 [[annotations]]
 SPDX-FileCopyrightText = "2023 natural-harmonia-gropius"
 SPDX-License-Identifier = "MIT"
-path = ["scripts/recent-menu.lua"]
+path = ["scripts/recentmenu.lua"]
 
 [[annotations]]
 SPDX-FileCopyrightText = "2025 po5"

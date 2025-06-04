@@ -5,7 +5,7 @@ Configuration for mpv on multiple platforms, based on the following guides:
 - <https://iamscum.wordpress.com/guides/videoplayback-guide/mpv-conf>
 - <https://thewiki.moe/tutorials/mpv/>
 
-## Extensions
+## Scripts and Configurations
 
 - [christoph-heinrich/mpv-quality-menu](https://github.com/christoph-heinrich/mpv-quality-menu)
 - [guidocella/mpv-image-config](https://github.com/guidocella/mpv-image-config)

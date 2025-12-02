@@ -9,7 +9,7 @@ Configuration for mpv on multiple platforms, based on the following guides:
 
 - [christoph-heinrich/mpv-quality-menu](https://github.com/christoph-heinrich/mpv-quality-menu)
 - [guidocella/mpv-image-config](https://github.com/guidocella/mpv-image-config)
-- [natural-harmonia-gropius/recent-menu](https://github.com/natural-harmonia-gropius/recent-menu)
+- [po5/memo](https://github.com/po5/memo)
 - [po5/mpv_sponsorblock](https://github.com/po5/mpv_sponsorblock)
 - [po5/thumbfast](https://github.com/po5/thumbfast)
 - [Scripts from mpv](https://github.com/mpv-player/mpv)

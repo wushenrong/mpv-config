@@ -153,17 +153,6 @@ function parse_update_interval()
     return num * time_table[mod]
 end
 
-function clean_chapters()
-    local chapters = mp.get_property_native("chapter-list")
-    local new_chapters = {}
-    for _, chapter in pairs(chapters) do
-        if chapter.title ~= "Preview segment start" and chapter.title ~= "Preview segment end" then
-            table.insert(new_chapters, chapter)
-        end
-    end
-    mp.set_property_native("chapter-list", new_chapters)
-end
-
 function create_chapter(chapter_title, chapter_time)
     local chapters = mp.get_property_native("chapter-list")
     local duration = mp.get_property_native("duration")
@@ -344,32 +333,6 @@ function skip_ads(name, pos)
     end
 end
 
-function vote(dir)
-    if last_skip.uuid == "" then return mp.osd_message("[sponsorblock] no sponsors skipped, can't submit vote") end
-    local updown = dir == "1" and "up" or "down"
-    if last_skip.dir == dir then return mp.osd_message("[sponsorblock] " .. updown .. "vote already submitted") end
-    last_skip.dir = dir
-    local args = {
-        options.python_path,
-        sponsorblock,
-        "stats",
-        database_file,
-        options.server_address,
-        youtube_id,
-        last_skip.uuid,
-        "",
-        uid_path,
-        options.user_id,
-        dir
-    }
-    if not legacy then
-        mp.command_native_async({name = "subprocess", playback_only = false, args = args}, function () end)
-    else
-        utils.subprocess({args = args})
-    end
-    mp.osd_message("[sponsorblock] " .. updown .. "vote submitted")
-end
-
 function update()
     mp.command_native_async({name = "subprocess", playback_only = false, args = {
         options.python_path,
@@ -458,112 +421,4 @@ function file_loaded()
     update()
 end
 
-function set_segment()
-    if not youtube_id then return end
-    local pos = mp.get_property_number("time-pos")
-    if pos == nil then return end
-    if segment.progress > 1 then
-        segment.progress = segment.progress - 2
-    end
-    if segment.progress == 1 then
-        segment.progress = 0
-        segment.b = pos
-        mp.osd_message("[sponsorblock] segment boundary B set, press again for boundary A", 3)
-    else
-        segment.progress = 1
-        segment.a = pos
-        mp.osd_message("[sponsorblock] segment boundary A set, press again for boundary B", 3)
-    end
-    if options.make_chapters and not segment.first then
-        local start_time = math.min(segment.a, segment.b)
-        local end_time = math.max(segment.a, segment.b)
-        if end_time - start_time ~= 0 and end_time ~= 0 then
-            clean_chapters()
-            create_chapter("Preview segment start", start_time)
-            create_chapter("Preview segment end", end_time)
-        end
-    end
-    segment.first = false
-end
-
-function select_category(selected)
-    for category in string.gmatch(options.categories, "([^,]+)") do
-        mp.remove_key_binding("select_category_"..category)
-        mp.remove_key_binding("kp_select_category_"..category)
-    end
-    submit_segment(selected)
-end
-
-function submit_segment(category)
-    if not youtube_id then return end
-    local start_time = math.min(segment.a, segment.b)
-    local end_time = math.max(segment.a, segment.b)
-    if end_time - start_time == 0 or end_time == 0 then
-        mp.osd_message("[sponsorblock] empty segment, not submitting")
-    elseif segment.progress <= 1 then
-        segment.progress = segment.progress + 2
-        local category_list = ""
-        for category_id, category in pairs(all_categories) do
-            local category_title = (category:gsub("^%l", string.upper):gsub("_", " "))
-            category_list = category_list .. category_id .. ": " .. category_title .. "\n"
-            mp.add_forced_key_binding(tostring(category_id), "select_category_"..category, function() select_category(category) end)
-            mp.add_forced_key_binding("KP"..tostring(category_id), "kp_select_category_"..category, function() select_category(category) end)
-        end
-        mp.osd_message(string.format("[sponsorblock] press a number to select category for segment: %.2d:%.2d:%.2d to %.2d:%.2d:%.2d\n\n" .. category_list .. "\nyou can press Shift+G again for default (Sponsor) or hide this message with g", math.floor(start_time/(60*60)), math.floor(start_time/60%60), math.floor(start_time%60), math.floor(end_time/(60*60)), math.floor(end_time/60%60), math.floor(end_time%60)), 30)
-    else
-        mp.osd_message("[sponsorblock] submitting segment...", 30)
-        local submit
-        local args = {
-            options.python_path,
-            sponsorblock,
-            "submit",
-            database_file,
-            options.server_address,
-            youtube_id,
-            tostring(start_time),
-            tostring(end_time),
-            uid_path,
-            options.user_id,
-            category or "sponsor"
-        }
-        if not legacy then
-            submit = mp.command_native({name = "subprocess", capture_stdout = true, playback_only = false, args = args})
-        else
-            submit = utils.subprocess({args = args})
-        end
-        if string.match(submit.stdout, "success") then
-            segment = {a = 0, b = 0, progress = 0, first = true}
-            mp.osd_message("[sponsorblock] segment submitted")
-            if options.make_chapters then
-                clean_chapters()
-                create_chapter("Submitted segment start", start_time)
-                create_chapter("Submitted segment end", end_time)
-            end
-        elseif string.match(submit.stdout, "error") then
-            mp.osd_message("[sponsorblock] segment submission failed, server may be down. try again", 5)
-        elseif string.match(submit.stdout, "502") then
-            mp.osd_message("[sponsorblock] segment submission failed, server is down. try again", 5)
-        elseif string.match(submit.stdout, "400") then
-            mp.osd_message("[sponsorblock] segment submission failed, impossible inputs", 5)
-            segment = {a = 0, b = 0, progress = 0, first = true}
-        elseif string.match(submit.stdout, "429") then
-            mp.osd_message("[sponsorblock] segment submission failed, rate limited. try again", 5)
-        elseif string.match(submit.stdout, "409") then
-            mp.osd_message("[sponsorblock] segment already submitted", 3)
-            segment = {a = 0, b = 0, progress = 0, first = true}
-        else
-            mp.osd_message("[sponsorblock] segment submission failed", 5)
-        end
-    end
-end
-
 mp.register_event("file-loaded", file_loaded)
-mp.add_key_binding("g", "set_segment", set_segment)
-mp.add_key_binding("G", "submit_segment", submit_segment)
-mp.add_key_binding("h", "upvote_segment", function() return vote("1") end)
-mp.add_key_binding("H", "downvote_segment", function() return vote("0") end)
--- Bindings below are for backwards compatibility and could be removed at any time
-mp.add_key_binding(nil, "sponsorblock_set_segment", set_segment)
-mp.add_key_binding(nil, "sponsorblock_submit_segment", submit_segment)
-mp.add_key_binding(nil, "sponsorblock_upvote", function() return vote("1") end)
-mp.add_key_binding(nil, "sponsorblock_downvote", function() return vote("0") end)

@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2025 Samuel Wu
 #
-# SPDX-License-Identifier: Unlicense
+# SPDX-License-Identifier: 0BSD
 
 # EditorConfig is awesome: https://EditorConfig.org
 
@@ -11,5 +11,6 @@ root = true
 indent_style = space
 indent_size = 4
 charset = utf-8
+end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true

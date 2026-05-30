@@ -62,7 +62,7 @@ path = ["scripts/coverart.lua"]
 [[annotations]]
 SPDX-FileCopyrightText = "2024 Joao Chrisostomo, Kacper Michajłow"
 SPDX-License-Identifier = "MIT"
-path = ["shaders/ArtCNN_C4F16.glsl"]
+path = ["shaders/ArtCNN_C4F32.glsl"]
 
 [[annotations]]
 SPDX-FileCopyrightText = "2021 Advanced Micro Devices, Inc."
@@ -72,4 +72,4 @@ path = ["shaders/FSR.glsl"]
 [[annotations]]
 SPDX-FileCopyrightText = "2023 bjin"
 SPDX-License-Identifier = "LGPL-3.0-or-later"
-path = ["shaders/nnedi3-nns64-win8x4.hook"]
+path = ["shaders/nnedi3-nns128-win8x4.hook"]

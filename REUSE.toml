@@ -55,6 +55,11 @@ SPDX-License-Identifier = "GPL-3.0-or-later"
 path = ["scripts/memo.lua"]
 
 [[annotations]]
+SPDX-FileCopyrightText = "2020 Oscar Manglaras"
+SPDX-License-Identifier = "MIT"
+path = ["scripts/coverart.lua"]
+
+[[annotations]]
 SPDX-FileCopyrightText = "2024 Joao Chrisostomo, Kacper Michajłow"
 SPDX-License-Identifier = "MIT"
 path = ["shaders/ArtCNN_C4F16.glsl"]
